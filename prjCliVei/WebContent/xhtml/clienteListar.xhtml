@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="_modelo.xhtml">
+
+	<ui:define name="titulo">Cadastro de Clientes</ui:define>
+	
+	<ui:define name="opcoesMenu">
+		<p:commandButton ajax="false" type="push" value="Incluir Novo Cliente"
+			action="#{clienteMB.acaoAbrirInclusao}" immediate="true"
+			image="ui-icon-document" />
+	</ui:define>
+
+<ui:define name="conteudo">
+	<h:form id="form">
+
+			<h:panelGrid columns="3">
+				<h:outputLabel value="Filtrar Perfil:" for="perfil"></h:outputLabel>
+				<h:selectOneListbox id="perfil" value="#{clienteMB.filtroPerfil}"
+					size="1" converter="perfil-converter">
+					<f:selectItem itemLabel="Selecione..."></f:selectItem>
+					<f:selectItems value="#{clienteMB.perfis}" var="perfil"
+						itemLabel="#{perfil.descricao}"></f:selectItems>
+				</h:selectOneListbox>
+				<p:commandButton ajax="false" update="lista" id="btnFiltrar"
+						action="#{clienteMB.acaoListar()}" value="Filtrar"></p:commandButton>
+			</h:panelGrid>
+			
+			<br />
+			<p:dataTable id="lista" var="item" value="#{clienteMB.clientes}"
+				paginator="true" rows="15" rowsPerPageTemplate="5,10,15"
+				selectionMode="single" rendered="#{not empty clienteMB.clientes}">
+
+				<f:facet name="header">
+					<h:outputText value="Lista de Clientes:" />
+				</f:facet>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Nome" />
+					</f:facet>
+					<h:outputText value="#{item.nome}" />
+				</p:column>
+				
+				<p:column sortBy="#{item.perfil.descricao}">
+					<f:facet name="header">
+						<h:outputText value="Perfil" />
+					</f:facet>
+					<h:outputText value="#{item.perfil}" />
+				</p:column>
+				
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Celular" />
+					</f:facet>
+					<h:outputText value="#{item.celular}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Tel. Fixo" />
+					</f:facet>
+					<h:outputText value="#{item.telefoneFixo}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="E-mail" />
+					</f:facet>
+					<h:outputText value="#{item.email}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Cidade" />
+					</f:facet>
+					<h:outputText value="#{item.cidade.nome}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Ações" />
+					</f:facet>
+					<h:panelGroup>
+						<p:commandButton ajax="false" type="push" value="Alterar"
+							action="#{clienteMB.acaoAbrirAlteracao}" immediate="true"
+							image="ui-icon-pencil">
+							<f:param value="#{item.id}" name="itemId" />
+						</p:commandButton>
+
+						<p:commandButton type="button" value="Excluir"
+							onclick="conf#{item.id}.show()" image="ui-icon-close">
+						</p:commandButton>
+
+						<p:confirmDialog message="Deseja excluir este registro?"
+							showEffect="bounce" hideEffect="explode" 
+							header="Confirmação de Exclusão" severity="alert"
+							widgetVar="conf#{item.id}">
+
+							<p:commandButton ajax="false" type="push" value="Sim"
+								action="#{clienteMB.acaoExcluir}" immediate="true"
+								image="ui-icon-check">
+								<f:param value="#{item.id}" name="itemId" />
+							</p:commandButton>
+
+							<p:commandButton value="Não" onclick="conf#{item.id}.hide()"
+								type="button" image="ui-icon-close" />
+						</p:confirmDialog>
+					</h:panelGroup>
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>

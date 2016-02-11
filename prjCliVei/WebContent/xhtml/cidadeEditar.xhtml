@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="_modelo.xhtml">
+
+	<ui:define name="titulo">Editar Cidade</ui:define>
+
+		<ui:define name="conteudo">
+		<h:form id="form" prependId="false">
+			<h:inputHidden id="idUsuario" value="#{cidadeMB.cidade.id}" />
+			<h:panelGrid columns="2">
+
+				<h:outputLabel value="Estado" for="estado"></h:outputLabel>
+				<h:panelGroup>
+					<h:selectOneListbox id="estado" value="#{cidadeMB.cidade.estado}"
+					size="1" converter="estado-converter">
+					<f:selectItem itemLabel="Selecione..."/>
+					<f:selectItems value="#{cidadeMB.estados}" var="estado"
+						itemLabel="#{estado.nome}"></f:selectItems>
+				</h:selectOneListbox>
+				</h:panelGroup>
+				
+				<h:outputLabel value="Nome:" for="nome"></h:outputLabel>
+				<h:panelGroup>
+					<p:inputText size="50" id="nome" value="#{cidadeMB.cidade.nome}"
+						required="true" requiredMessage="O Campo Placa é obrigatório.">
+					</p:inputText>
+				</h:panelGroup>
+
+				<f:facet name="footer">
+					<h:panelGroup layout="block" style="text-align: center">
+						<p:commandButton ajax="false" id="btnSalvar"
+							action="#{cidadeMB.acaoSalvar}" value="Salvar"></p:commandButton>
+						<p:commandButton ajax="false" id="btnCancelar"
+							action="#{cidadeMB.acaoCancelar}" immediate="true"
+							value="Cancelar"></p:commandButton>
+					</h:panelGroup>
+				</f:facet>
+
+			</h:panelGrid>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>

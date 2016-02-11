@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="_modelo.xhtml">
+
+	<ui:define name="titulo">Editar Veículo</ui:define>
+
+		<ui:define name="conteudo">
+		<h:form id="form" prependId="false">
+			<h:inputHidden id="idUsuario" value="#{veiculoMB.veiculo.id}" />
+			<h:panelGrid columns="2">
+
+				<h:outputLabel value="Cliente:" for="cliente"></h:outputLabel>
+				<h:panelGroup>
+					<h:selectOneListbox id="cliente" value="#{veiculoMB.veiculo.cliente}"
+					size="1" converter="cliente-converter">
+					<f:selectItem itemLabel="Selecione..."/>
+					<f:selectItems value="#{veiculoMB.clientes}" var="cliente"
+						itemLabel="#{cliente.nome}"></f:selectItems>
+				</h:selectOneListbox>
+				</h:panelGroup>
+
+				<h:outputLabel value="Placa:" for="placa"></h:outputLabel>
+				<h:panelGroup>
+					<p:inputText size="50" id="placa" value="#{veiculoMB.veiculo.placa}"
+						required="true" requiredMessage="O Campo Placa é obrigatório.">
+					</p:inputText>
+				</h:panelGroup>
+
+				<h:outputLabel value="Cor:" for="cor"></h:outputLabel>
+				<p:inputText id="cor" value="#{veiculoMB.veiculo.cor}"
+					required="true"
+					requiredMessage="O Campo Cor é obrigatório."></p:inputText>
+
+				<h:outputLabel value="Modelo:" for="modelo"></h:outputLabel>
+				<p:inputText id="modelo" value="#{veiculoMB.veiculo.modelo}"
+					required="true" requiredMessage="O Campo Modelo é obrigatório."></p:inputText>
+
+				<h:outputLabel value="Fabricante:" for="fabricante"></h:outputLabel>
+				<p:inputText size="50" id="fabricante" value="#{veiculoMB.veiculo.fabricante}"
+					required="true" requiredMessage="O Campo Fabricante é obrigatório."></p:inputText>
+
+				<f:facet name="footer">
+					<h:panelGroup layout="block" style="text-align: center">
+						<p:commandButton ajax="false" id="btnSalvar"
+							action="#{veiculoMB.acaoSalvar}" value="Salvar"></p:commandButton>
+						<p:commandButton ajax="false" id="btnCancelar"
+							action="#{veiculoMB.acaoCancelar}" immediate="true"
+							value="Cancelar"></p:commandButton>
+					</h:panelGroup>
+				</f:facet>
+
+			</h:panelGrid>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>

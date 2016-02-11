@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="_modelo.xhtml">
+
+	<ui:define name="titulo">Cadastro de Cidades</ui:define>
+
+	<ui:define name="opcoesMenu">
+		<p:commandButton ajax="false" type="push" value="Incluir Nova Cidade"
+			action="#{cidadeMB.acaoAbrirInclusao}" immediate="true"
+			image="ui-icon-document" />
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<h:form id="form">
+
+			<h:panelGrid columns="3">
+				<h:outputLabel value="Filtrar Estado:" for="estado"></h:outputLabel>
+				<h:selectOneListbox id="estado" value="#{cidadeMB.filtroEstado}"
+					size="1" converter="estado-converter">
+					<f:selectItem itemLabel="Selecione..."></f:selectItem>
+					<f:selectItems value="#{cidadeMB.estados}" var="estado"
+						itemLabel="#{estado.nome}"></f:selectItems>
+				</h:selectOneListbox>
+				<p:commandButton ajax="false" update="lista" id="btnFiltrar"
+						action="#{cidadeMB.acaoListar()}" value="Filtrar"></p:commandButton>
+			</h:panelGrid>
+			
+			<br />
+			<p:dataTable id="lista" var="item" value="#{cidadeMB.cidades}"
+				paginator="true" rows="15" rowsPerPageTemplate="5,10,15"
+				selectionMode="single" rendered="#{not empty cidadeMB.cidades}">
+
+				<f:facet name="header">
+					<h:outputText value="Lista de Cidades:" />
+				</f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Nome" />
+					</f:facet>
+					<h:outputText value="#{item.nome}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Estado" />
+					</f:facet>
+					<h:outputText value="#{item.estado.nome}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Ações" />
+					</f:facet>
+					<h:panelGroup>
+						<p:commandButton ajax="false" type="push" value="Alterar"
+							action="#{cidadeMB.acaoAbrirAlteracao}" immediate="true"
+							image="ui-icon-pencil">
+							<f:param value="#{item.id}" name="itemId" />
+						</p:commandButton>
+
+						<p:commandButton type="button" value="Excluir"
+							onclick="conf#{item.id}.show()" image="ui-icon-close">
+						</p:commandButton>
+
+						<p:confirmDialog message="Deseja excluir este registro?"
+							showEffect="bounce" hideEffect="explode" 
+							header="Confirmação de Exclusão" severity="alert"
+							widgetVar="conf#{item.id}">
+
+							<p:commandButton ajax="false" type="push" value="Sim"
+								action="#{cidadeMB.acaoExcluir}" immediate="true"
+								image="ui-icon-check">
+								<f:param value="#{item.id}" name="itemId" />
+							</p:commandButton>
+
+							<p:commandButton value="Não" onclick="conf#{item.id}.hide()"
+								type="button" image="ui-icon-close" />
+						</p:confirmDialog>
+					</h:panelGroup>
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>
